@@ -1,0 +1,17 @@
+.copaflora__header{
+    width: 100%;
+    background-color: #333;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    transition: height 0.3s ease;
+}
+
+.copaflora__header.small {
+    height: 100px; 
+}
