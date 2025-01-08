@@ -1,82 +1,116 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Box, CardMedia, Typography } from "@mui/material";
-import { theme } from "../../../shared";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
+import { Box, CardMedia, Typography, Card, CardActions, CardContent, Button } from "@mui/material";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { StarRating } from "../StarRating";
+import type { ProductCardType } from "./ProductCard.types";
+import { theme } from "../../Theme";
 
-export function ProductCard() {
-
+export function ProductCard({ product, onProductCartSelectionChange, onFavoriteProductCartSelected }: ProductCardType) {
   const [isFavorite, setIsFavorite] = useState(false);
 
-  function onClickFavorite() {
-    setIsFavorite(!isFavorite);
+  function onClickFavoriteItem() {
+    setIsFavorite((prev) => !prev);
+    onFavoriteProductCartSelected(product.idProduct)
+  }
+  function onClickCartItem() {
+    onProductCartSelectionChange(product.idProduct)
   }
 
+  const primaryColor = theme.palette.primary.main;
   return (
     <Card
       sx={{
-
-        width: 280,
-        minWidth: 100,
-        height: 411,
+        width: 240,
+        height: 340,
         flexDirection: "column",
         display: "flex",
         alignItems: "center",
-        justifyContent: "revert-layer",
+        justifyContent: "flex-start",
         borderRadius: 2,
-        background: "rgba(255, 255, 255, 0.80)"
+        background: "rgba(255, 255, 255, 0.80)",
       }}
     >
-      <CardMedia
-        component="img"
-        alt="Andiroba"
-        height="269"
-        width="280"
-        image="public/img-copaflora-slide-produtos-03.jpg"
-        sx={{ borderBottom: `4px solid ${theme.palette.primary.main}` }}
-      />
+      <Box sx={{ position: "relative", width: "100%" }}>
+        <CardMedia
+          component="img"
+          alt="Produto"
+          width="100%"
+          image={product.imgUrl}
+          sx={{ borderBottom: `4px solid ${primaryColor}` }}
+        />
+        <Box sx={{ position: "absolute", top: 10, left: 10, zIndex: 1 }}>
+          <StarRating
+            readRating={true}
+            ratingValue={product.starRatingValue}
+            sx={{
+              '& .MuiRating-iconFilled': {
+                color: '#F9EF00',
+              },
+              '& .MuiRating-iconEmpty': {
+                color: '#F9EF00',
+              }
+            }}
+          />
+        </Box>
+      </Box>
+
       <CardContent sx={{ width: "100%" }}>
-        <Typography gutterBottom variant="h5" component="div" sx={{ color: theme.palette.primary.main, fontWeight: "bold" }}>
-          Óleo de andiroba
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{
+            color: primaryColor,
+            fontWeight: "bold",
+          }}
+        >
+          {product.productTitle}
         </Typography>
-        <Typography variant="body2" sx={{ color: theme.palette.primary.main, fontSize: 16 }}>
-          De <span style={{ textDecoration: 'line-through' }}>R$ 55,65 </span>
-          por <strong>R$40,58</strong>
+        <Typography variant="body2" sx={{ color: primaryColor, fontSize: 16 }}>
+          De <span style={{ textDecoration: "line-through" }}>R$ {product.oldPrice} </span>
+          por <strong>{product.newPrice}</strong>
         </Typography>
       </CardContent>
+
       <CardActions
         sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between'
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" size="large" sx={
-          {
-            background: theme.palette.primary.main
-          }
-        }>Comprar</Button>
-        <Box display="flex" justifyContent="flex-end">
-          <Button onClick={onClickFavorite}>
-            <FavoriteIcon sx={{
-              color: theme.palette.primary.main,
-              display: `${isFavorite && "none"}`
-            }} />
-            <FavoriteBorderIcon sx={{
-              color: theme.palette.primary.main,
-              display: `${!isFavorite && "none"}`
-            }} />
+        <Button
+          variant="contained"
+          size="small"
+          sx={{
+            background: primaryColor,
+          }}
+        >
+          Comprar
+        </Button>
 
-          </Button>
-          <Button>
-            <AddShoppingCartIcon sx={{
-              color: theme.palette.primary.main
-            }} />
+        <Box sx={{
+          display: "flex",
+          alignItems: "center"
+        }} justifyContent="flex-end">
+          <Box onClick={onClickFavoriteItem} sx={{ cursor: "pointer" }}>
+            <FavoriteIcon
+              sx={{
+                color: primaryColor,
+                display: isFavorite ? "none" : "block",
+              }}
+            />
+            <FavoriteBorderIcon
+              sx={{
+                color: primaryColor,
+                display: isFavorite ? "block" : "none",
+              }}
+            />
+          </Box>
+          <Button onClick={onClickCartItem}>
+            <AddShoppingCartIcon sx={{ color: primaryColor }} />
           </Button>
         </Box>
       </CardActions>
