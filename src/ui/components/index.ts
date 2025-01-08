@@ -6,3 +6,4 @@ export * from "./UserMenu";
 export * from "./SearchBar";
 export * from "./NavMenu";
 export * from "./ProductCard";
+export * from "./StarRating";

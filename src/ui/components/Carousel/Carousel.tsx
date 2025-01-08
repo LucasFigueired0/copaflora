@@ -1,4 +1,3 @@
-// import { useState, useEffect } from "react";
 import { register } from 'swiper/element/bundle'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { CarouselProps } from './Carousel.types';
